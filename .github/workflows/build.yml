@@ -13,7 +13,16 @@ jobs:
       - name: Build with Gradle
         run: |
           cd LCSESNXUtility
-          gradle wrapper --gradle-version 8.5
+          # 安装兼容的 Gradle 6.9.4 版本
+          wget https://services.gradle.org/distributions/gradle-6.9.4-bin.zip
+          unzip -q gradle-6.9.4-bin.zip
+          export PATH=$PWD/gradle-6.9.4/bin:$PATH
+          
+          # 强制生成该版本的 wrapper
+          gradle wrapper --gradle-version 6.9.4
+          chmod +x gradlew
+          
+          # 执行编译。由于项目较老，尝试使用 jar 命令
           ./gradlew jar
       - name: Upload JAR
         uses: actions/upload-artifact@v4
